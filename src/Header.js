@@ -17,7 +17,7 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 
-const pages = ["About Us", "Contact Us"];
+const pages = ["About", "Contact"];
 
 const Header = () => {
   const token = useContext(TokenContext);
@@ -41,8 +41,14 @@ const Header = () => {
             <Typography
               variant="h6"
               noWrap
-              component="div"
-              sx={{ mr: 2, display: { xs: "none", md: "flex" } }}
+              component={RouterLink}
+              sx={{
+                mr: 2,
+                display: { xs: "none", md: "flex" },
+                textDecoration: "none",
+                color: "white",
+              }}
+              to="/"
             >
               Logo
             </Typography>
@@ -93,6 +99,8 @@ const Header = () => {
             <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
               {pages.map((page) => (
                 <Button
+                  component={RouterLink}
+                  to={`/${page}`}
                   key={page}
                   onClick={handleCloseNavMenu}
                   sx={{ my: 2, color: "white", display: "block" }}

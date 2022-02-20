@@ -9,6 +9,7 @@ import {
   Typography,
   CardContent,
   Button,
+  TextField,
 } from "@mui/material";
 import { ErrorSharp, Visibility, VisibilityOff } from "@mui/icons-material";
 import React, { useState } from "react";
@@ -21,9 +22,26 @@ const Login = () => {
     password: "",
     showPassword: false,
   });
+  const [errors, setErrors] = useState({
+    email: "",
+    password: "",
+  });
 
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
+  };
+
+  const handleOnBlur = (prop) => (event) => {
+    if (values[prop].length < 8) {
+      setErrors({
+        ...errors,
+        [prop]: `${prop} should be at least 8 Characters`,
+      });
+    } else if (values[prop].length === 0) {
+      setErrors({ ...errors, [prop]: "shouldn't be empty" });
+    } else {
+      setErrors({ email: "", password: "" });
+    }
   };
 
   const handleClickShowPassword = () => {
@@ -79,23 +97,28 @@ const Login = () => {
               variant="outlined"
               required
             >
-              <InputLabel htmlFor="outlined-adornment-email">E-mail</InputLabel>
-              <OutlinedInput
+              {/* <InputLabel htmlFor="outlined-adornment-email">E-mail</InputLabel> */}
+              <TextField
                 id="outlined-adornment-email"
                 value={values.email}
                 onChange={handleChange("email")}
-                label="email"
+                label="Email"
+                error={Boolean(errors.email)}
+                helperText={errors.email && errors.email}
+                required
+                onBlur={handleOnBlur("email")}
               />
             </FormControl>
             <FormControl sx={{ m: 1, width: "50ch" }} variant="outlined">
-              <InputLabel htmlFor="outlined-adornment-password">
-                Password
-              </InputLabel>
-              <OutlinedInput
+              <TextField
                 id="outlined-adornment-password"
                 type={values.showPassword ? "text" : "password"}
                 value={values.password}
                 onChange={handleChange("password")}
+                onBlur={handleOnBlur("password")}
+                helperText={errors.password && errors.password}
+                error={Boolean(errors.password)}
+                required
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton
@@ -114,6 +137,7 @@ const Login = () => {
               variant="contained"
               sx={{ width: "50ch" }}
               onClick={handleSubmit}
+              disabled={Boolean(errors.email || errors.password)}
             >
               Submit
             </Button>
