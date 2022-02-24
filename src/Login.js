@@ -13,10 +13,12 @@ import {
 } from "@mui/material";
 import { ErrorSharp, Visibility, VisibilityOff } from "@mui/icons-material";
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
-const Login = () => {
+const Login = (props) => {
   let navigate = useNavigate();
+  const location = useLocation();
+  let from = location.state?.from.pathname || "/";
   const [values, setValues] = useState({
     email: "",
     password: "",
@@ -68,7 +70,7 @@ const Login = () => {
       })
       .then((res) => {
         localStorage.setItem("token", res.token);
-        navigate("/", { replace: true });
+        navigate(from, { replace: true });
       })
       .catch((err) => alert(err));
   };

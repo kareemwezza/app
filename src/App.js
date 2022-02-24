@@ -7,6 +7,7 @@ import About from "./About";
 import Home from "./Home";
 import Login from "./Login";
 import Contact from "./Contact";
+import PrivateRoute from "./PrivateRoute";
 
 const App = () => {
   const token = localStorage.getItem("token");
@@ -17,7 +18,10 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/about" element={<About />} />
+          <Route
+            path="/about"
+            element={<PrivateRoute component={<About />} />}
+          />
           <Route path="/contact" element={<Contact />} />
         </Routes>
       </TokenContext.Provider>
